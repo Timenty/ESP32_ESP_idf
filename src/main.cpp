@@ -3,44 +3,42 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 
-
 extern "C"
 {
     void vTaskCode( void * pvParameters )
     {
         static const char* TAG = "MAIN";
         int8_t counter = 0;
-        TickType_t skipped_ticks = 200;
+        TickType_t skippedTicks = 200;
         for( ;; )
         {
-            gpio_set_level(GPIO_NUM_2, (uint32_t)(counter%2));
-            ESP_LOGW(TAG, "Hello World from vtask! count: %d", counter += 1);
-            vTaskDelay(skipped_ticks);
+            gpio_set_level(GPIO_NUM_23, (uint32_t)(counter%2));
+            ESP_LOGW(TAG, "counter %d", counter%2);
+            counter += 1;
+            // ESP_LOGW(TAG, "Hello World from vtask! count: %d", counter += 1);
+            vTaskDelay(skippedTicks);
         }
     }
 
     void vTaskCodeTwo( void * pvParameters )
     {
-        static const char* TAG = "MAIN_TWO";
-        int8_t counter = 0;
-        TickType_t skipped_ticks = 50;
+        // static const char* TAG = "MAIN_TWO";
+        // int8_t counter = 0;
+        TickType_t skippedTicks = 50;
         for( ;; )
         {
-            ESP_LOGW(TAG, "Hello World from vtask two! count: %d", counter += 2);
-            vTaskDelay(skipped_ticks);
+            // ESP_LOGW(TAG, "Hello World from vtask two! count: %d", counter += 2);
+            vTaskDelay(skippedTicks);
         }
     }
 
     void app_main()
     {
-        gpio_reset_pin(GPIO_NUM_2);
-        gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
+        gpio_reset_pin(GPIO_NUM_23);
+        gpio_set_direction(GPIO_NUM_23, GPIO_MODE_OUTPUT);
+        gpio_set_level(GPIO_NUM_23, (uint32_t)(1));
         static const char* TAG = "MAIN";
         ESP_LOGD(TAG,"Hello World!");
-        ESP_LOGD(TAG,"Hello World!");
-        ESP_LOGI(TAG,"Hello World!");
-        ESP_LOGI(TAG,"Hello World!");
-        ESP_LOGW(TAG,"Hello World!");
 
         static uint8_t ucParameterToPass;
         TaskHandle_t xHandle = NULL;
@@ -60,6 +58,5 @@ extern "C"
         // {
         //     vTaskDelete( xHandle );
         // }
-
     }
 }
